@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1016269191186",
+    "project_id": "newsmobile-5bed6",
+    "storage_bucket": "newsmobile-5bed6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016269191186:android:ea05b1dd3d16f91e8400cb",
+        "android_client_info": {
+          "package_name": "com.example.news"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNTYbnlY5agohRXJSY_x1aqQ8sdzC4R2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

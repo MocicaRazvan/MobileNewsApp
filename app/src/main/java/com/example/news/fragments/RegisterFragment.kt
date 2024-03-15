@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.news.R
 import com.example.news.databinding.FragmentRegisterBinding
+import com.example.news.utils.UserInputValidation
+import com.example.news.utils.validateFullName
 import com.example.news.viewModels.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -42,56 +44,40 @@ class RegisterFragment : Fragment() {
         fAuth = FirebaseAuth.getInstance()
 
         binding.apply {
-            home.setOnClickListener {
-                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
-                findNavController().navigate(action)
-            }
 
             btnRegister.setOnClickListener {
                 handleSubmit()
             }
+            tvRegister.setOnClickListener {
+                val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                findNavController().navigate(action)
+            }
         }
 
         fAuth.currentUser?.let {
-            val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
+            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             findNavController().navigate(action)
         }
     }
 
 
     private fun handleSubmit() {
-        val email = binding.email.text.toString().trim()
-        val password = binding.password.text.toString().trim()
 
-        if (email.isEmpty()) {
-            binding.email.apply {
-                error = "Email is required"
-                requestFocus()
-            }
-            return
+
+        val isFullNameValid =
+            binding.fullNameTil.validateFullName("Full name must be at least 3 characters")
+
+        if (UserInputValidation.validateForm(binding.credentials) &&
+            isFullNameValid
+        ) {
+            binding.progressBar.visibility = View.VISIBLE
+            registerViewModel.registerUser(
+                binding.credentials.emailEt.text.toString().trim(),
+                binding.credentials.passwordEt.text.toString().trim(), fAuth
+            )
         }
 
-        if (password.isEmpty()) {
-            binding.password.apply {
-                error = "Password is required"
-                requestFocus()
-            }
-            return
-        }
-
-        if (password.length < 6) {
-            binding.password.apply {
-                error = "Password must be at least 6 characters"
-                requestFocus()
-            }
-            return
-        }
-
-        binding.progressBar.visibility = View.VISIBLE
-
-        registerViewModel.registerUser(email, password, fAuth)
-
-        registerViewModel.getRegisterResult().observe(viewLifecycleOwner) {
+        registerViewModel.registerResult.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.progressBar.visibility = View.INVISIBLE
                 val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
@@ -100,10 +86,10 @@ class RegisterFragment : Fragment() {
 
         }
 
-        registerViewModel.getErrorResult().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
+        registerViewModel.errorResult.observe(viewLifecycleOwner) {
+            if (it?.isNotEmpty() == true) {
                 binding.progressBar.visibility = View.GONE
-                binding.email.apply {
+                binding.credentials.emailEt.apply {
                     error = it
                     requestFocus()
                 }
@@ -115,3 +101,4 @@ class RegisterFragment : Fragment() {
     }
 
 }
+

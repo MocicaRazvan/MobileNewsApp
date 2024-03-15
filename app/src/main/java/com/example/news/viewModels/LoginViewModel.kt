@@ -10,20 +10,26 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class LoginViewModel : ViewModel() {
 
-    private val credentialsAuthResult = MutableLiveData<AuthResult>()
-    private val credentialsErrorResult = MutableLiveData<String>()
+    var credentialsAuthResult = MutableLiveData<AuthResult>()
+        private set
+    var credentialsErrorResult = MutableLiveData<String?>()
+        private set
 
-    private val intentSender = MutableLiveData<IntentSenderRequest>()
-    private val googleErrorResult = MutableLiveData<String>()
+    var intentSender = MutableLiveData<IntentSenderRequest>()
+        private set
+    var googleErrorResult = MutableLiveData<String>()
+        private set
 
     fun loginUser(email: String, password: String, fAuth: FirebaseAuth) {
         viewModelScope.launch {
             try {
+                credentialsErrorResult.value = null
                 val result = fAuth.signInWithEmailAndPassword(email, password).await()
                 credentialsAuthResult.value = result
             } catch (e: Exception) {
@@ -50,10 +56,10 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun getCredentialsAuthResult() = credentialsAuthResult
-    fun getCredentialsErrorResult() = credentialsErrorResult
-
-    fun getIntentSender() = intentSender
-    fun getGoogleErrorResult() = googleErrorResult
+//    fun getCredentialsAuthResult() = credentialsAuthResult
+//    fun getCredentialsErrorResult() = credentialsErrorResult
+//
+//    fun getIntentSender() = intentSender
+//    fun getGoogleErrorResult() = googleErrorResult
 
 }

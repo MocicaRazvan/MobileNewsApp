@@ -10,13 +10,16 @@ import kotlinx.coroutines.tasks.await
 
 class RegisterViewModel : ViewModel() {
 
-    private val registerResult = MutableLiveData<AuthResult>()
-    private val errorResult = MutableLiveData<String>()
+    var registerResult = MutableLiveData<AuthResult>()
+        private set
+    var errorResult = MutableLiveData<String?>()
+        private set
 
 
     fun registerUser(email: String, password: String, fAuth: FirebaseAuth) {
         viewModelScope.launch {
             try {
+                errorResult.value = null
                 val result = fAuth.createUserWithEmailAndPassword(email, password).await()
                 registerResult.value = result
             } catch (e: Exception) {
@@ -27,6 +30,6 @@ class RegisterViewModel : ViewModel() {
 
     }
 
-    fun getRegisterResult() = registerResult
-    fun getErrorResult() = errorResult
+//    fun getRegisterResult() = registerResult
+//    fun getErrorResult() = errorResult
 }

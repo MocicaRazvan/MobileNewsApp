@@ -3,4 +3,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_web_client_id">1016269191186-4hs462vvqgbn8bsaui7q5ldsru98lsuu.apps.googleusercontent.com</string>
+    <string name="auth_arg_email">Email</string>
+    <string name="auth_arg_password">Password</string>
+    <string name="auth_arg_confirm_password">Confirm Password</string>
+    <string name="auth_arg_log_in">Log In</string>
+    <string name="auth_arg_sign_up_with_google">Sign Up With Google</string>
+    <string name="auth_arg_don_t_have_an_account_register">Don\'t have an account? Register</string>
+    <string name="auth_arg_full_name">Full Name</string>
+    <string name="auth_arg_register">Register</string>
+    <string name="auth_arg_already_have_an_account_log_in">Already have an account? Log in!</string>
 </resources>

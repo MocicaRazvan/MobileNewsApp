@@ -3,6 +3,7 @@ package com.example.news.fragments
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.news.R
 import com.example.news.databinding.FragmentLoginBinding
+import com.example.news.utils.UserInputValidation
+import com.example.news.utils.clearError
+import com.example.news.utils.matchPasswords
+import com.example.news.utils.validateEmail
+import com.example.news.utils.validatePasswordLength
 import com.example.news.viewModels.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
@@ -57,9 +64,7 @@ class LoginFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
                     .setServerClientId(getString(R.string.default_web_client_id))
-                    // Only show accounts previously used to sign in.
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             )
@@ -68,15 +73,10 @@ class LoginFragment : Fragment() {
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.apply {
-            btnRegister.setOnClickListener {
+            tvRegister.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 findNavController().navigate(action)
             }
-            home.setOnClickListener {
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                findNavController().navigate(action)
-            }
-
             btnLogin.setOnClickListener {
                 onSubmit()
             }
@@ -98,17 +98,18 @@ class LoginFragment : Fragment() {
 
 
 
-        loginViewModel.getIntentSender().observe(viewLifecycleOwner) { intentSenderRequest ->
+        loginViewModel.intentSender.observe(viewLifecycleOwner) { intentSenderRequest ->
             intentSenderRequest?.let {
                 activityResultLauncher.launch(it)
             }
         }
 
-        loginViewModel.getGoogleErrorResult().observe(viewLifecycleOwner) { errorMessage ->
+        loginViewModel.googleErrorResult.observe(viewLifecycleOwner) { errorMessage ->
+            binding.progressBar.visibility = View.INVISIBLE
             Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
         }
 
-        loginViewModel.getIntentSender().observe(viewLifecycleOwner) {
+        loginViewModel.intentSender.observe(viewLifecycleOwner) {
             Log.d("GOOGLE", "Intent sender received ${it}")
             activityResultLauncher.launch(it)
         }
@@ -162,52 +163,31 @@ class LoginFragment : Fragment() {
     }
 
     private fun onSubmit() {
-        val email = binding.email.text.toString().trim()
-        val password = binding.password.text.toString().trim()
 
-        if (email.isEmpty()) {
-            binding.email.apply {
-                error = "Email is required"
-                requestFocus()
-            }
-            return
+        if (UserInputValidation.validateForm(binding.credentials)) {
+            binding.progressBar.visibility = View.VISIBLE
+            loginViewModel.loginUser(
+                binding.credentials.emailEt.text.toString().trim(),
+                binding.credentials.passwordEt.text.toString().trim(), fAuth
+            )
         }
 
-        if (password.isEmpty()) {
-            binding.password.apply {
-                error = "Password is required"
-                requestFocus()
-            }
-            return
-        }
 
-        if (password.length < 6) {
-            binding.password.apply {
-                error = "Password must be at least 6 characters"
-                requestFocus()
-            }
-            return
-        }
-
-        binding.progressBar.visibility = View.VISIBLE
-
-        loginViewModel.loginUser(email, password, fAuth)
-
-        loginViewModel.getCredentialsAuthResult().observe(viewLifecycleOwner) {
+        loginViewModel.credentialsAuthResult.observe(viewLifecycleOwner) {
             if (it != null) {
+                binding.progressBar.visibility = View.INVISIBLE
                 val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                 findNavController().navigate(action)
             }
         }
 
-        loginViewModel.getCredentialsErrorResult().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                binding.progressBar.visibility = View.GONE
-                binding.email.apply {
+        loginViewModel.credentialsErrorResult.observe(viewLifecycleOwner) {
+            if (it?.isNotEmpty() == true) {
+                binding.progressBar.visibility = View.INVISIBLE
+                binding.credentials.emailEt.apply {
                     error = it
                     requestFocus()
                 }
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -216,3 +196,5 @@ class LoginFragment : Fragment() {
 
 
 }
+
+

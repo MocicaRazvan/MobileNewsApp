@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var fAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +36,19 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+        fAuth = FirebaseAuth.getInstance()
+        if (fAuth.currentUser == null) {
+            navigateToLogin()
+        }
     }
 
     private fun logout() {
         FirebaseAuth.getInstance().signOut()
+        navigateToLogin()
+    }
+
+    private fun navigateToLogin() {
         val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()
         findNavController().navigate(action)
     }

@@ -16,4 +16,6 @@
     <string name="auth_arg_already_have_an_account_log_in">Already have an account? Log in!</string>
     <string name="item_placeholder_title">TITLE</string>
     <string name="item_imgv_content_the_image_of_the_news">The image of the news</string>
+    <string name="search_arg">Search...</string>
+    <string name="no_data_was_found_text">No data was found!</string>
 </resources>

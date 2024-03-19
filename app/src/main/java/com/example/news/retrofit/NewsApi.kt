@@ -1,5 +1,6 @@
 package com.example.news.retrofit
 
+import com.example.news.BuildConfig
 import com.example.news.dto.AllNewsResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,8 +15,7 @@ interface NewsApi {
         @Query("sortBy") sortBy: String = "publishedAt",
         @Query("searchIn") searchIn: String = "title",
         @Query("apiKey")
-        // put the string manually its not working not like this
-        apiKey: String = ApiKeyHandler.getNewsApiKey()
+        apiKey: String = BuildConfig.NEWS_API_KEY
     ): Response<AllNewsResponse>
 
     @GET("top-headlines")
@@ -26,7 +26,7 @@ interface NewsApi {
         @Query("page") page: Int = 1,
         @Query("pageSize") pageSize: Int = 20,
         @Query("apiKey")
-        apiKey: String = ApiKeyHandler.getNewsApiKey()
+        apiKey: String = BuildConfig.NEWS_API_KEY
     ): Response<AllNewsResponse>
 
 }

@@ -18,6 +18,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "NEWS_API_KEY", "\"${property("NEWS_API_KEY")}\"")
+        buildConfigField("String", "NEWS_API_BASE_URL", "\"${property("NEWS_API_BASE_URL")}\"")
+        buildConfigField(
+            "String",
+            "DEFAULT_WEB_CLIENT_ID",
+            "\"${property("DEFAULT_WEB_CLIENT_ID")}\""
+        )
+
     }
 
     buildTypes {
@@ -38,6 +47,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -72,4 +82,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

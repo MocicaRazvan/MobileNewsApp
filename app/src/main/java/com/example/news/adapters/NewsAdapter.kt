@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.news.databinding.ItemCardBinding
 import com.example.news.dto.Article
+import kotlin.reflect.KProperty0
 
 class NewsAdapter(
     private val onItemClick: (Article) -> Unit

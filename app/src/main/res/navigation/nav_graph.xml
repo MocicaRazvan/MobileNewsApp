@@ -54,4 +54,9 @@
         android:name="com.example.news.fragments.AllFragment"
         android:label="fragment_all"
         tools:layout="@layout/fragment_all" />
+    <fragment
+        android:id="@+id/topHeadlinesFragment"
+        android:name="com.example.news.fragments.TopHeadlinesFragment"
+        android:label="fragment_top_headlines"
+        tools:layout="@layout/fragment_top_headlines" />
 </navigation>

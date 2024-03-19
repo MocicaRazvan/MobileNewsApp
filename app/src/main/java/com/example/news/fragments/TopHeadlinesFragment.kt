@@ -7,26 +7,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.news.R
 import com.example.news.adapters.NewsAdapter
-import com.example.news.databinding.FragmentHomeBinding
+import com.example.news.databinding.FragmentTopHeadlinesBinding
 import com.example.news.dto.Article
-import com.example.news.viewModels.HomeViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.news.retrofit.CategoryApiQuery
+import com.example.news.retrofit.CountriesApiQuery
+import com.example.news.viewModels.TopHeadlinesViewModel
+import com.google.android.material.button.MaterialButton
 
-class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var binding: FragmentHomeBinding
-    private lateinit var fAuth: FirebaseAuth
-    private lateinit var homeViewModel: HomeViewModel
+class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+
+    private lateinit var binding: FragmentTopHeadlinesBinding
+    private lateinit var topHeadlinesViewModel: TopHeadlinesViewModel
     private lateinit var newsAdapter: NewsAdapter
-
 
     private var maxResults = 80
     private var totalResults: Int? = null
@@ -35,35 +38,49 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-
+        binding = FragmentTopHeadlinesBinding.inflate(layoutInflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+        topHeadlinesViewModel = ViewModelProvider(this)[TopHeadlinesViewModel::class.java]
+
         binding.reusableRv.swipeRefreshLayout.setOnRefreshListener(this)
 
-        initRv()
+        CategoryApiQuery.entries.forEach {
+            val button = createButton(it.name).apply {
+                setOnClickListener { _ ->
+                    onCategoryClicked(it)
+                }
+            }
+            binding.categoriesLL.addView(button)
+        }
 
-        fAuth = FirebaseAuth.getInstance()
-        if (fAuth.currentUser == null) {
-            navigateToLogin()
+        CountriesApiQuery.entries.forEach {
+            val button = createButton(it.name).apply {
+                setOnClickListener { _ ->
+                    onCountryClicked(it)
+
+                }
+            }
+            binding.countriesLL.addView(button)
         }
 
 
-        getAllNews(false)
+        initRv()
 
-        observerNews()
+        getTopHeadlines(false)
 
+        observerHeadlines()
 
 
         binding.reusableRv.rvNews.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -77,7 +94,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 } else if (lastVisibleItem == totalItems - 1 && !isLoading) {
                     if (totalResults != null && totalResults!! > newsAdapter.currentList.size) {
                         page++
-                        getAllNews(false)
+                        getTopHeadlines(false)
                     }
                 }
 
@@ -85,17 +102,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         })
 
-
-        binding.searchET.apply {
-            setText("electric")
-            doAfterTextChanged(this@HomeFragment::handleSearchTextChange)
-            doOnTextChanged { _, _, _, _ ->
-                if (error != null) error = null
-            }
-        }
-
-
+        binding.searchET.doAfterTextChanged(this::handleSearchTextChange)
     }
+
 
     private fun initRv() {
         newsAdapter = NewsAdapter(this::onItemClick)
@@ -107,35 +116,60 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     }
 
+    private fun onItemClick(article: Article) {
+        Log.e("HomeFragment", "Article: ${article.title}")
+    }
+
+
+    private fun createButton(name: String) = MaterialButton(requireContext()).apply {
+        text = name
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        ).apply {
+            marginEnd = 8
+            cornerRadius = 8
+        }
+
+    }
+
+
+    private fun onCountryClicked(country: CountriesApiQuery) {
+        newsAdapter.submitList(emptyList())
+        page = 1
+        topHeadlinesViewModel.countryQuery.value = country
+    }
+
+
+    private fun onCategoryClicked(category: CategoryApiQuery) {
+        newsAdapter.submitList(emptyList())
+        page = 1
+        topHeadlinesViewModel.categoryQuery.value = category
+    }
+
     private fun handleSearchTextChange(ed: Editable?) {
         isLoading = true
         binding.reusableRv.progressBar.visibility = View.VISIBLE
         val query = ed.toString()
 
-        if (query.length < 3) {
-            binding.searchET.apply {
-                error = "Search query must be at least 3 characters"
-                return
-            }
-        } else {
-            newsAdapter.submitList(emptyList())
-            page = 1
-            homeViewModel.searchQuery.value = ed.toString()
-        }
+//        if (query.length < 3) {
+//            binding.searchET.apply {
+//                error = "Search query must be at least 3 characters"
+//                return
+//            }
+//        } else {
+//            newsAdapter.submitList(emptyList())
+//            page = 1
+//            topHeadlinesViewModel.searchQuery.value = ed.toString()
+//        }
+
+        newsAdapter.submitList(emptyList())
+        page = 1
+        topHeadlinesViewModel.searchQuery.value = ed.toString()
     }
 
-    private fun logout() {
-        FirebaseAuth.getInstance().signOut()
-        navigateToLogin()
-    }
-
-    private fun navigateToLogin() {
-        val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun observerNews() {
-        homeViewModel.allNewsLiveData.observe(
+    private fun observerHeadlines() {
+        topHeadlinesViewModel.topHeadlinesLiveData.observe(
             viewLifecycleOwner
 
         ) {
@@ -160,22 +194,16 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
-
-    private fun onItemClick(article: Article) {
-        Log.e("HomeFragment", "Article: ${article.title}")
-    }
-
-    private fun getAllNews(isOnRefresh: Boolean) {
+    private fun getTopHeadlines(isOnRefresh: Boolean) {
         isLoading = true
         if (!isOnRefresh) binding.reusableRv.progressBar.visibility = View.VISIBLE
-        homeViewModel.getAllNews(page)
+        topHeadlinesViewModel.getTopHeadlines(page)
     }
 
     override fun onRefresh() {
         newsAdapter.submitList(emptyList())
         page = 1
-        getAllNews(true)
+        getTopHeadlines(true)
     }
-
 
 }

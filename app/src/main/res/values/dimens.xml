@@ -6,4 +6,5 @@
     <dimen name="default_big_margin">32dp</dimen>
     <dimen name="default_elevation">10dp</dimen>
     <dimen name="default_big_txt">23sp</dimen>
+    <dimen name="btm_nav_height">90dp</dimen>
 </resources>

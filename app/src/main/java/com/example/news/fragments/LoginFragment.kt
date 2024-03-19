@@ -14,6 +14,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.news.BuildConfig
 import com.example.news.R
 import com.example.news.databinding.FragmentLoginBinding
 import com.example.news.utils.UserInputValidation
@@ -64,7 +65,7 @@ class LoginFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setServerClientId(BuildConfig.DEFAULT_WEB_CLIENT_ID)
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             )

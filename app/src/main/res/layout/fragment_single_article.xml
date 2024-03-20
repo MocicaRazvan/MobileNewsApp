@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".fragments.SingleArticleFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/btm_nav_height">
+
+        <ImageView
+            android:id="@+id/articleImg"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="4dp"
+            android:contentDescription="@string/article_image_no_content"
+            android:scaleType="center"
+            android:src="@drawable/no_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/infoLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/default_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/articleImg">
+
+            <TextView
+                android:id="@+id/articleAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_profile"
+                android:text="Marcel Mirel"
+                android:textSize="@dimen/default_txt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/articleDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_date"
+                android:text="2023-01-01"
+                android:textSize="@dimen/default_txt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/articleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/deafult_margin"
+            android:paddingHorizontal="@dimen/default_padding"
+            android:text="Cox Communications won’t have to pay $1 billion to record labels after all"
+            android:textAlignment="center"
+            android:textSize="@dimen/default_big_txt"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoLL" />
+
+        <TextView
+            android:id="@+id/articleBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/deafult_margin"
+            android:paddingHorizontal="@dimen/default_padding"
+            android:text="Cox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after allCox Communications won’t have to pay $1 billion to record labels after all"
+            android:textAlignment="center"
+            android:textSize="@dimen/default_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/articleTitle" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnFavourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:clickable="true"
+            android:visibility="gone"
+            android:contentDescription="@string/content_desc_add_to_favourites"
+            android:src="@drawable/ic_favorites"
+            app:layout_constraintBottom_toBottomOf="@+id/articleImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="?colorError" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:clickable="true"
+            android:visibility="gone"
+            android:contentDescription="@string/btn_content_delete_from_favourites"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="@+id/articleImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="?colorError" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

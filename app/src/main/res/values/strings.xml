@@ -2,9 +2,6 @@
     <string name="app_name">News</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="default_web_client_id">1016269191186-4hs462vvqgbn8bsaui7q5ldsru98lsuu.apps.googleusercontent.com</string>
-    <string name="news_api_key">12d01a8707fe4ab88abab3d8e54910ad</string>
-    <string name="news_api_base_url">https://newsapi.org/v2/</string>
     <string name="auth_arg_email">Email</string>
     <string name="auth_arg_password">Password</string>
     <string name="auth_arg_confirm_password">Confirm Password</string>
@@ -16,6 +13,9 @@
     <string name="auth_arg_already_have_an_account_log_in">Already have an account? Log in!</string>
     <string name="item_placeholder_title">TITLE</string>
     <string name="item_imgv_content_the_image_of_the_news">The image of the news</string>
-    <string name="search_arg">Search...</string>
+    <string name="search_arg">Search…</string>
     <string name="no_data_was_found_text">No data was found!</string>
+    <string name="article_image_no_content">Article Image</string>
+    <string name="content_desc_add_to_favourites">Add to favourites</string>
+    <string name="btn_content_delete_from_favourites">Delete from favourites</string>
 </resources>

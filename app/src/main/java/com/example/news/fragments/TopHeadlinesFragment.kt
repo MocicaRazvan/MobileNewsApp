@@ -1,5 +1,7 @@
 package com.example.news.fragments
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -10,8 +12,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,10 +23,13 @@ import com.example.news.R
 import com.example.news.adapters.NewsAdapter
 import com.example.news.databinding.FragmentTopHeadlinesBinding
 import com.example.news.dto.Article
+import com.example.news.dto.ParcelableArticle
 import com.example.news.retrofit.CategoryApiQuery
 import com.example.news.retrofit.CountriesApiQuery
+import com.example.news.utils.ArticleMapper
 import com.example.news.viewModels.TopHeadlinesViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 
 
 class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -59,6 +66,7 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         CategoryApiQuery.entries.forEach {
             val button = createButton(it.name).apply {
                 setOnClickListener { _ ->
+
                     onCategoryClicked(it)
                 }
             }
@@ -68,6 +76,7 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         CountriesApiQuery.entries.forEach {
             val button = createButton(it.name).apply {
                 setOnClickListener { _ ->
+
                     onCountryClicked(it)
 
                 }
@@ -103,6 +112,8 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         })
 
         binding.searchET.doAfterTextChanged(this::handleSearchTextChange)
+
+
     }
 
 
@@ -117,6 +128,14 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun onItemClick(article: Article) {
+
+        val navigation =
+            TopHeadlinesFragmentDirections.actionTopHeadlinesFragmentToSingleArticleFragment(
+                ArticleMapper.fromArticleToParcelable(article)
+            )
+
+        findNavController().navigate(navigation)
+
         Log.e("HomeFragment", "Article: ${article.title}")
     }
 

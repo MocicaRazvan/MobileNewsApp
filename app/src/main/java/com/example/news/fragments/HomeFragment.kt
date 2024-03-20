@@ -17,6 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.adapters.NewsAdapter
 import com.example.news.databinding.FragmentHomeBinding
 import com.example.news.dto.Article
+import com.example.news.dto.ParcelableArticle
+import com.example.news.utils.ArticleMapper
 import com.example.news.viewModels.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -162,6 +164,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
 
     private fun onItemClick(article: Article) {
+        val action = HomeFragmentDirections.actionHomeFragmentToSingleArticleFragment(
+            ArticleMapper.fromArticleToParcelable(article)
+        )
+        findNavController().navigate(action)
         Log.e("HomeFragment", "Article: ${article.title}")
     }
 

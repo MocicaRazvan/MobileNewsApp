@@ -3,6 +3,7 @@ package com.example.news.utils
 import com.example.news.db.ArticleModel
 import com.example.news.dto.Article
 import com.example.news.dto.ParcelableArticle
+import com.google.firebase.auth.FirebaseAuth
 
 object ArticleMapper {
     fun fromArticleToParcelable(article: Article) = ParcelableArticle(
@@ -26,6 +27,7 @@ object ArticleMapper {
     )
 
     fun fromParcelableToModel(parcelableArticle: ParcelableArticle) = ArticleModel(
+        FirebaseAuth.getInstance().currentUser?.uid,
         parcelableArticle.author,
         parcelableArticle.content,
         parcelableArticle.description,
@@ -33,5 +35,17 @@ object ArticleMapper {
         parcelableArticle.title,
         parcelableArticle.url,
         parcelableArticle.urlToImage
+    )
+
+    fun fromModelToArticle(articleModel: ArticleModel) = Article(
+        author = articleModel.author ?: "",
+        content = articleModel.content ?: "",
+        description = articleModel.description ?: "",
+        publishedAt = articleModel.publishedAt ?: "",
+        source = null,
+        title = articleModel.title ?: "",
+        url = articleModel.url ?: "",
+        urlToImage = articleModel.urlToImage ?: ""
+
     )
 }

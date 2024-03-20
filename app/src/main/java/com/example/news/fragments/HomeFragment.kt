@@ -126,10 +126,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
-    private fun logout() {
-        FirebaseAuth.getInstance().signOut()
-        navigateToLogin()
-    }
 
     private fun navigateToLogin() {
         val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()

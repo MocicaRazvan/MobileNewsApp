@@ -8,4 +8,5 @@
     <dimen name="default_big_txt">23sp</dimen>
     <dimen name="default_txt">16sp</dimen>
     <dimen name="btm_nav_height">90dp</dimen>
+    <dimen name="extra_big_txt">35sp</dimen>
 </resources>

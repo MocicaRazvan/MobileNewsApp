@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.google.firebase.auth.FirebaseAuth
 
 @Dao
 interface ArticleDao {
@@ -15,10 +16,23 @@ interface ArticleDao {
     @Delete
     suspend fun delete(articleModel: ArticleModel)
 
-    @Query("delete from article where title = :title")
-    suspend fun deleteByTitle(title: String)
+    @Query("delete from article where title = :title and userId = :userId")
+    suspend fun deleteByTitle(
+        title: String,
+        userId: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    )
 
 
-    @Query("select exists (select 1 from article where title = :title)")
-    suspend fun existsByTitle(title: String): Boolean
+    @Query("select exists (select 1 from article where title = :title and userId = :userId)")
+    suspend fun existsByTitle(
+        title: String,
+        userId: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    ): Boolean
+
+    @Query("SELECT * FROM article WHERE LOWER(title) LIKE '%' || LOWER(:title) || '%' and userId = :userId")
+    suspend fun getArticlesByTitleLike(
+        title: String,
+        userId: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    ): List<ArticleModel>
+
 }

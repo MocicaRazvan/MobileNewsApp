@@ -46,12 +46,20 @@
         android:id="@+id/favortiesFragment"
         android:name="com.example.news.fragments.FavortiesFragment"
         android:label="fragment_favorties"
-        tools:layout="@layout/fragment_favorties" />
+        tools:layout="@layout/fragment_favorties">
+        <action
+            android:id="@+id/action_favortiesFragment_to_singleArticleFragment"
+            app:destination="@id/singleArticleFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.news.fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/allFragment"
         android:name="com.example.news.fragments.AllFragment"
@@ -74,5 +82,8 @@
         <argument
             android:name="article"
             app:argType="com.example.news.dto.ParcelableArticle" />
+        <action
+            android:id="@+id/action_singleArticleFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

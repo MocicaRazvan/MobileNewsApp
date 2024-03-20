@@ -18,4 +18,7 @@
     <string name="article_image_no_content">Article Image</string>
     <string name="content_desc_add_to_favourites">Add to favourites</string>
     <string name="btn_content_delete_from_favourites">Delete from favourites</string>
+    <string name="placeholder_full_name">Full Name</string>
+    <string name="placeholder_marcelgigi_gmail_com">marcelGigi@gmail.com</string>
+    <string name="args_log_out">Log Out</string>
 </resources>

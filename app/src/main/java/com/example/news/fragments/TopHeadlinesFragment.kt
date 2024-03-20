@@ -171,17 +171,6 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         binding.reusableRv.progressBar.visibility = View.VISIBLE
         val query = ed.toString()
 
-//        if (query.length < 3) {
-//            binding.searchET.apply {
-//                error = "Search query must be at least 3 characters"
-//                return
-//            }
-//        } else {
-//            newsAdapter.submitList(emptyList())
-//            page = 1
-//            topHeadlinesViewModel.searchQuery.value = ed.toString()
-//        }
-
         newsAdapter.submitList(emptyList())
         page = 1
         topHeadlinesViewModel.searchQuery.value = ed.toString()

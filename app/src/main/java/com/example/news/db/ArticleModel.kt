@@ -4,10 +4,14 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "article", indices = [Index(value = ["title"], unique = false)])
+@Entity(
+    tableName = "article",
+    indices = [Index(value = ["title"], unique = false), Index(value = ["userId"], unique = false)]
+)
 class ArticleModel(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
+    var userId: String?,
     val author: String?,
     val content: String?,
     val description: String?,
@@ -17,6 +21,7 @@ class ArticleModel(
     val urlToImage: String?
 ) {
     constructor(
+        userId: String?,
         author: String?,
         content: String?,
         description: String?,
@@ -24,7 +29,7 @@ class ArticleModel(
         title: String?,
         url: String?,
         urlToImage: String?
-    ) : this(null, author, content, description, publishedAt, title, url, urlToImage)
+    ) : this(null, userId, author, content, description, publishedAt, title, url, urlToImage)
 }
 
 

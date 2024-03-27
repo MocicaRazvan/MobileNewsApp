@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,7 @@ import com.example.news.utils.ArticleMapper
 import com.example.news.viewModels.TopHeadlinesViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
+import kotlin.math.log
 
 
 class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -65,9 +67,9 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         CategoryApiQuery.entries.forEach {
             val button = createButton(it.name).apply {
-                setOnClickListener { _ ->
+                setOnClickListener { btn ->
 
-                    onCategoryClicked(it)
+                    onCategoryClicked(it, btn)
                 }
             }
             binding.categoriesLL.addView(button)
@@ -75,9 +77,9 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         CountriesApiQuery.entries.forEach {
             val button = createButton(it.name).apply {
-                setOnClickListener { _ ->
+                setOnClickListener { btn ->
 
-                    onCountryClicked(it)
+                    onCountryClicked(it, btn)
 
                 }
             }
@@ -91,6 +93,7 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         observerHeadlines()
 
+        observeSelections()
 
         binding.reusableRv.rvNews.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -114,6 +117,24 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         binding.searchET.doAfterTextChanged(this::handleSearchTextChange)
 
 
+    }
+
+    private fun observeSelections() {
+        topHeadlinesViewModel.apply {
+            selectedCategory.observe(viewLifecycleOwner) { c ->
+                binding.categoriesLL.children.forEach {
+                    it.isPressed = false
+                    it.isSelected = it.tag as String == c?.name
+                }
+            }
+
+            selectedCountry.observe(viewLifecycleOwner) { c ->
+                binding.countriesLL.children.forEach {
+                    it.isPressed = false
+                    it.isSelected = it.tag as String == c?.name
+                }
+            }
+        }
     }
 
 
@@ -140,30 +161,41 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
 
-    private fun createButton(name: String) = MaterialButton(requireContext()).apply {
+    private fun createButton(name: String) = Button(requireContext()).apply {
         text = name
+        tag = name
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.MATCH_PARENT
         ).apply {
             marginEnd = 8
-            cornerRadius = 8
         }
+        Log.e("THF", textColors.toString());
+        setBackgroundResource(R.drawable.options_btn)
+        setTextColor(ContextCompat.getColor(requireContext(), R.color.options_text))
+        Log.e("THF", textColors.toString());
 
     }
 
 
-    private fun onCountryClicked(country: CountriesApiQuery) {
+    private fun onCountryClicked(country: CountriesApiQuery, btn: View) {
         newsAdapter.submitList(emptyList())
         page = 1
         topHeadlinesViewModel.countryQuery.value = country
+
+
+        val button = btn as? Button ?: return
+        button.isPressed = true
     }
 
 
-    private fun onCategoryClicked(category: CategoryApiQuery) {
+    private fun onCategoryClicked(category: CategoryApiQuery, btn: View) {
         newsAdapter.submitList(emptyList())
         page = 1
         topHeadlinesViewModel.categoryQuery.value = category
+
+        val button = btn as? Button ?: return
+        button.isPressed = true
     }
 
     private fun handleSearchTextChange(ed: Editable?) {

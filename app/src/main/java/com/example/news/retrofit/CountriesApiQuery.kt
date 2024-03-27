@@ -8,4 +8,8 @@ enum class CountriesApiQuery(val value: String) {
         return value
     }
 
+    fun getKeyFromValue(value: String): CountriesApiQuery? {
+        return entries.find { it.value == value }
+    }
+
 }

@@ -5,6 +5,7 @@
     <color name="blue">#FF0000FF</color>
 
     <color name="light_gray">#37D3D3D3</color>
+    <color name="logo_color">#E63D42</color>
 
     <color name="seed">#406918</color>
     <color name="md_theme_light_primary">#406918</color>

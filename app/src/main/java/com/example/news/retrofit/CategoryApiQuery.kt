@@ -12,4 +12,8 @@ enum class CategoryApiQuery(val value: String) {
     override fun toString(): String {
         return value
     }
+
+    fun getKeyFromValue(value: String): CategoryApiQuery? {
+        return entries.find { it.value == value }
+    }
 }

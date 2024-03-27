@@ -21,4 +21,5 @@
     <string name="placeholder_full_name">Full Name</string>
     <string name="placeholder_marcelgigi_gmail_com">marcelGigi@gmail.com</string>
     <string name="args_log_out">Log Out</string>
+    <string name="spash_img_logo">Logo</string>
 </resources>

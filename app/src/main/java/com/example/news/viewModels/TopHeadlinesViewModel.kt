@@ -23,6 +23,10 @@ class TopHeadlinesViewModel : ViewModel() {
     var countryQuery = MutableStateFlow(CountriesApiQuery.US)
     var categoryQuery = MutableStateFlow(CategoryApiQuery.GENERAL)
 
+    var selectedCategory = MutableLiveData(CategoryApiQuery.GENERAL)
+        private set
+    var selectedCountry = MutableLiveData(CountriesApiQuery.US)
+        private set
 
     init {
         viewModelScope.launch {
@@ -34,12 +38,14 @@ class TopHeadlinesViewModel : ViewModel() {
         viewModelScope.launch {
             countryQuery
                 .collect {
+                    selectedCountry.value = it
                     getTopHeadlines(searchQuery.value, categoryQuery.value, it)
                 }
         }
         viewModelScope.launch {
             categoryQuery
                 .collect {
+                    selectedCategory.value = it
                     getTopHeadlines(searchQuery.value, it, countryQuery.value)
                 }
         }

@@ -10,12 +10,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.news.databinding.ActivityMainBinding
 import com.example.news.databinding.ReusableFormBinding
 import com.example.news.dto.ParcelableArticle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        lifecycleScope.launch {
+            handleSplashScreen()
         }
 
         val bottomNav = binding.btmNav
@@ -50,6 +59,33 @@ class MainActivity : AppCompatActivity() {
                     bottomNav.visibility = View.VISIBLE
                 }
             }
+        }
+
+
+    }
+
+    private suspend fun handleSplashScreen() {
+        withContext(Dispatchers.Default) {
+            delay(1950)
+        }
+        withContext(Dispatchers.Main) {
+            Log.d(
+                "SplashScreen",
+                "Before hiding: Logo visibility = ${binding.logo.visibility}, NavHostFragment visibility = ${binding.navHostFragment.visibility}"
+            )
+
+            binding.apply {
+                motionLayout.visibility = View.GONE
+                splash.visibility = View.GONE
+                logo.visibility = View.GONE
+                navHostFragment.visibility = View.VISIBLE
+                btmNav.visibility = View.VISIBLE
+            }
+            Log.d(
+                "SplashScreen",
+                "After hiding: Logo visibility = ${binding.logo.visibility}, NavHostFragment visibility = ${binding.navHostFragment.visibility}"
+            )
+
         }
     }
 

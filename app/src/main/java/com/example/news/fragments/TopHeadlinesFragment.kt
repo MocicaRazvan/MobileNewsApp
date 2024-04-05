@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
@@ -28,6 +29,7 @@ import com.example.news.dto.ParcelableArticle
 import com.example.news.retrofit.CategoryApiQuery
 import com.example.news.retrofit.CountriesApiQuery
 import com.example.news.utils.ArticleMapper
+import com.example.news.utils.ThemePreferences
 import com.example.news.viewModels.TopHeadlinesViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
@@ -39,6 +41,9 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: FragmentTopHeadlinesBinding
     private lateinit var topHeadlinesViewModel: TopHeadlinesViewModel
     private lateinit var newsAdapter: NewsAdapter
+    private val themePreferences: ThemePreferences by lazy {
+        ThemePreferences(requireContext())
+    }
 
     private var maxResults = 80
     private var totalResults: Int? = null
@@ -164,6 +169,8 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun createButton(name: String) = Button(requireContext()).apply {
         text = name
         tag = name
+        isClickable = true
+        isFocusable = true
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.MATCH_PARENT
@@ -172,7 +179,15 @@ class TopHeadlinesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         Log.e("THF", textColors.toString());
         setBackgroundResource(R.drawable.options_btn)
-        setTextColor(ContextCompat.getColor(requireContext(), R.color.options_text))
+
+        setTextColor(
+            ContextCompat.getColor(
+                context, when (themePreferences.isDarkTheme()) {
+                    true -> R.color.black
+                    false -> R.color.md_theme_light_onTertiary
+                }
+            )
+        )
         Log.e("THF", textColors.toString());
 
     }

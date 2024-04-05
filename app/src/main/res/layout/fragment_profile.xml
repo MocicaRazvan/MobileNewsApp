@@ -27,6 +27,11 @@
             android:padding="@dimen/default_padding"
             android:gravity="center">
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/themeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
 
             <TextView
                 android:id="@+id/tvEmail"

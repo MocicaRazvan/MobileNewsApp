@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_arg"
             android:drawableEnd="@drawable/ic_search"
+            android:drawableTint="?colorOnSurface"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>

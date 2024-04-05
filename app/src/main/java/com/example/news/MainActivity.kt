@@ -17,6 +17,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.news.databinding.ActivityMainBinding
 import com.example.news.databinding.ReusableFormBinding
 import com.example.news.dto.ParcelableArticle
+import com.example.news.utils.ThemePreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,6 +26,10 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val themePreferences: ThemePreferences by lazy {
+        ThemePreferences(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,8 +43,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        lifecycleScope.launch {
-            handleSplashScreen()
+        themePreferences.loadTheme()
+
+        if (savedInstanceState == null) {
+            lifecycleScope.launch {
+                handleSplashScreen()
+            }
+        } else {
+            binding.apply {
+                motionLayout.visibility = View.GONE
+                splash.visibility = View.GONE
+                logo.visibility = View.GONE
+                navHostFragment.visibility = View.VISIBLE
+                btmNav.visibility = View.VISIBLE
+            }
         }
 
         val bottomNav = binding.btmNav
@@ -61,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        ThemePreferences(this).loadTheme()
 
     }
 

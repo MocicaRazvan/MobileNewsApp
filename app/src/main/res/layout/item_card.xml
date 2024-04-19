@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="?colorOnSurface"
+            android:textColor="@color/options_text"
             android:text="@string/item_placeholder_title" />
 
     </LinearLayout>

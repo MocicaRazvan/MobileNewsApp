@@ -6,7 +6,7 @@
     <item android:state_selected="true" android:color="?colorPrimaryInverse">
 
     </item>
-    <item android:color="@color/black">
+    <item android:color="?colorOnSurface">
 
     </item>
 </selector>

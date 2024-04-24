@@ -44,7 +44,8 @@
                 android:drawableStart="@drawable/ic_profile"
                 android:text="Marcel Mirel"
                 android:textSize="@dimen/default_txt"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableTint="?colorOnSurface" />
 
             <TextView
                 android:id="@+id/articleDate"
@@ -53,6 +54,7 @@
                 android:drawableStart="@drawable/ic_date"
                 android:text="2023-01-01"
                 android:textSize="@dimen/default_txt"
+                app:drawableTint="?colorOnSurface"
                 android:textStyle="bold" />
 
         </LinearLayout>

@@ -3,12 +3,15 @@
 
     <style name="CustomTextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeColor">?colorOnSurface</item>
+    </style>
+
+    <style name="CustomTextInputSearch" parent="CustomTextInputLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:hint">@string/search_arg</item>
         <item name="android:layout_marginTop">@dimen/default_big_margin</item>
-        <item name="boxStrokeColor">?colorOnSurface</item>
     </style>
 
-  
+
 </resources>

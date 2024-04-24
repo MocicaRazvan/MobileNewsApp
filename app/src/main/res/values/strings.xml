@@ -22,4 +22,5 @@
     <string name="placeholder_marcelgigi_gmail_com">marcelGigi@gmail.com</string>
     <string name="args_log_out">Log Out</string>
     <string name="spash_img_logo">Logo</string>
+    <string name="google_sign_up">Google Sign Up</string>
 </resources>

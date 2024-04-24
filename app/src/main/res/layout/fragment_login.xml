@@ -86,12 +86,13 @@
             android:layout_marginRight="11dp"
             android:background="@color/white"
             android:src="@drawable/google_icon"
-            android:backgroundTint="?colorSecondary" />
+            android:backgroundTint="?colorSecondary"
+            android:contentDescription="@string/google_sign_up" />
 
         <Button
             android:id="@+id/btnGoogle"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
             android:background="@android:color/transparent"
             android:text="@string/auth_arg_sign_up_with_google"
             android:textAllCaps="false"

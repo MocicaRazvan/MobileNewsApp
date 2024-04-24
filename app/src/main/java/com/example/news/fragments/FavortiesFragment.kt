@@ -77,6 +77,7 @@ class FavortiesFragment : Fragment() {
             }
             if (it.isEmpty()) {
                 binding.tvEmpty.visibility = View.VISIBLE
+                newsAdapter.submitList(emptyList())
             } else {
                 binding.tvEmpty.visibility = View.GONE
                 newsAdapter.submitList(it)
